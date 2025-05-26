@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #define HAS_CYCLING_REFERENCE 2
 #define CHECK_CYCLING(counter) ((counter) >= 2 ? HAS_CYCLING_REFERENCE : 0)
 
@@ -42,15 +43,17 @@ int reference_counter(int **object) {
 int main() {
 
 	/* we create a dummy object which has int value */
-	int a = 100;
-	int *a_reference = &a;
-	int x = reference_counter(&a_reference);
+	int *a = (int *)malloc(sizeof(int));
+	*a = 100;
+	int **a_reference = &a;
+	int x = reference_counter(a_reference);
 	printf("Counter: %d\n", x);
 
 	/**
 	 * Output will be 1 because it only went through once and points
 	 * to a single object. 
 	 */
+	free(a);
     	return 0;
 }
 
